@@ -1,658 +1,209 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MISSION: LAST SIGNAL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MISSION: LAST SIGNAL - Technicus</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080e18;color:#e7edf7;font-family:Arial,sans-serif}
-header{padding:18px 22px;background:#101d2e;border-bottom:1px solid #304158}
-header h1{margin:0;font-size:22px;letter-spacing:2px}
-header p{margin:6px 0 0;color:#9aabc1;font-size:12px}
-main{max-width:1050px;margin:auto;padding:18px}
-.panel{background:#101b2b;border:1px solid #293d56;border-radius:12px;padding:17px;margin-bottom:15px}
-h2{font-size:19px;margin-top:0}
-h3{font-size:15px;color:#8fc9ff}
-p{line-height:1.6}
-.muted{color:#9aabc1;font-size:13px;line-height:1.6}
-.small{font-size:12px;color:#9aabc1}
-button,input,select{font:inherit}
-button{cursor:pointer;border:1px solid #34465e;background:#17263a;color:#e7edf7;padding:11px 15px;border-radius:7px}
-button:hover{background:#263b56}
-button:disabled{opacity:.4;cursor:not-allowed}
-input,select{background:#0b1422;color:#fff;border:1px solid #40536c;border-radius:7px;padding:11px;width:100%;margin:7px 0}
-label{display:block;margin-top:10px;font-size:13px;color:#b9c8da}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-.stat{background:#0a1422;padding:13px;border-radius:8px;border:1px solid #26394f}
-.stat strong{display:block;font-size:22px;margin-top:5px}
-.task{border-left:4px solid #e5a83d}
-.task-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
-.task-chip{padding:9px;background:#0a1422;border-radius:7px;font-size:12px}
-.task-chip.done{border:1px solid #4bc78a;color:#78e0a2}
-.task-chip.current{border:1px solid #e5a83d}
-#message{padding:12px;border-radius:7px;background:#17263a;margin-top:12px;min-height:40px}
-.hidden{display:none!important}
-.warning{color:#ff7777}
-.good{color:#78e0a2}
-.manual-section{border-bottom:1px solid #293d56;padding:14px 0}
-.manual-section:last-child{border:0}
-.manual-section h3{margin:0 0 9px}
-.manual-content{line-height:1.7;font-size:14px}
-.manual-content p,.manual-content li{color:#c3cede}
-table{width:100%;border-collapse:collapse;font-size:13px}
-td,th{padding:9px;border-bottom:1px solid #293d56;text-align:left}
-th{color:#8fc9ff}
-.action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
-.action-grid button{min-height:48px}
-.choice{background:#0a1422;border:1px solid #34465e;border-radius:8px;padding:12px;margin:6px 0}
-.choice.selected{border-color:#e5a83d;background:#263b56}
-.sequence{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
-.sequence span{background:#17263a;border:1px solid #40536c;border-radius:6px;padding:8px}
-footer{text-align:center;color:#63758d;padding:25px;font-size:11px}
-@media(max-width:600px){main{padding:10px}.panel{padding:13px}.action-grid{grid-template-columns:1fr 1fr}}
+body{margin:0;background:#08111f;color:#e5edf8;font-family:Arial,sans-serif;padding:20px}
+main{max-width:950px;margin:auto}
+h1{color:#55d6be;letter-spacing:2px}
+h2{color:#8fc9ff;margin-top:30px}
+.panel{background:#111f32;border:1px solid #29415e;border-radius:12px;padding:18px;margin:15px 0}
+input,button{font-size:16px;padding:13px;border-radius:7px;border:1px solid #49617d}
+input{background:#071321;color:white;width:100%;margin:8px 0}
+button{background:#087e75;color:white;font-weight:bold;cursor:pointer;border:0}
+button:hover{background:#0b9b8e}
+.task{border-left:4px solid #55d6be;padding:12px 16px;margin:18px 0;background:#0c192a;border-radius:5px}
+.command{font-family:monospace;background:#020810;color:#7fffd4;padding:12px;border-radius:6px;overflow-wrap:anywhere}
+.small{color:#9eb0c7;font-size:14px}
+#manual{display:none}
 </style>
 </head>
 <body>
-
-<header>
-<h1>MISSION: LAST SIGNAL</h1>
-<p>COOPERATIVE SPACECRAFT RECOVERY SYSTEM · CLASSIFIED MISSION</p>
-</header>
-
 <main>
+<h1>MISSION: LAST SIGNAL</h1>
+<p class="small">TECHNICUSCONSOLE · VERTROUWELIJK MISSIEDOSSIER</p>
 
-<section id="setup" class="panel">
-<h2>Nieuwe missie</h2>
-<p class="muted">Maak een missie aan. Gebruik dezelfde missiecode op alle apparaten. De handleiding en console krijgen dan dezelfde missiegegevens.</p>
-<label>Missiecode</label>
-<input id="missionCode" value="LS-48271" maxlength="20">
-<label>Missienaam</label>
-<input id="missionName" value="The Lost Expedition">
-<label>Missieduur</label>
-<select id="duration">
-<option value="45">45 minuten</option>
-<option value="60" selected>60 minuten</option>
-<option value="75">75 minuten</option>
-<option value="90">90 minuten</option>
-</select>
-<button onclick="startMission()">GENEREER MISSIE</button>
+<section class="panel">
+<h2>Missie openen</h2>
+<p>Vul exact dezelfde missiecode in als op het apparaat van de uitvoerder.</p>
+<input id="missionCode" placeholder="Missiecode, bijvoorbeeld LS-2048">
+<button onclick="openMission()">OPEN MISSIEDOSSIER</button>
+<p id="message" class="small"></p>
 </section>
 
-<section id="roleScreen" class="hidden panel">
-<h2>Kies je rol</h2>
-<p class="muted">Kies de rol die bij jouw apparaat hoort. De uitvoerder krijgt geen toegang tot de handleiding.</p>
-<div class="grid">
-<div class="stat">
-<h3>UITVOERDER</h3>
-<p class="muted">Bedient het ruimteschip, voert opdrachten uit en herstelt de systemen.</p>
-<button onclick="enterRole('operator')">OPEN BEDIENINGSCONSOLE</button>
-</div>
-<div class="stat">
-<h3>TECHNISCHE HANDLEIDING</h3>
-<p class="muted">Bevat het verhaal, de bemanningsgegevens, technische rapporten en puzzelaanwijzingen.</p>
-<button onclick="enterRole('manual')">OPEN MISSIEDOSSIER</button>
-</div>
-</div>
+<div id="manual">
+<section class="panel">
+<h2 id="missionTitle"></h2>
+<p id="story"></p>
+<div id="crew"></div>
+<p id="missionFacts" class="small"></p>
 </section>
 
-<section id="operator" class="hidden">
-<div class="grid">
-<div class="stat">MISSIE<strong id="opCode">-</strong></div>
-<div class="stat">RESTERENDE TIJD<strong id="timer">60:00</strong></div>
-<div class="stat">FOUTEN<strong id="mistakes">0 / 3</strong></div>
-<div class="stat">HERSTELD<strong id="progress">0 / 15</strong></div>
-</div>
-
-<div class="panel">
-<h2>Ruimteschipstatus</h2>
-<p id="shipStatus" class="muted">Systemen wachten op herstel.</p>
-<div class="task-list" id="taskList"></div>
-</div>
-
-<div class="panel task">
-<div class="small" id="taskNumber">OPDRACHT 01</div>
-<h2 id="taskTitle">-</h2>
-<div id="taskSituation" class="manual-content"></div>
-<div class="panel" style="background:#0a1422">
-<h3>JOUW DOEL</h3>
-<p id="taskGoal"></p>
-<h3>UITVOERING</h3>
-<div id="taskSteps"></div>
-<h3>SUCCESCRITERIUM</h3>
-<p id="taskSuccess" class="muted"></p>
-</div>
-<div id="taskInputArea"></div>
-<button id="checkButton" onclick="checkAnswer()">CONTROLEER UITVOERING</button>
-<div id="message">Wacht op invoer...</div>
-</div>
+<section class="panel">
+<h2>Instructies voor de technicus</h2>
+<p>Los iedere opdracht hieronder op. Geef daarna het bijbehorende commando mondeling door aan de uitvoerder. De uitvoerder voert het commando letterlijk in op zijn eigen apparaat.</p>
+<p><strong>Belangrijk:</strong> geef niet zomaar alle commando's tegelijk door. Werk samen en wacht op de bevestiging van de uitvoerder voordat je verdergaat.</p>
 </section>
 
-<section id="manual" class="hidden">
-<div class="panel">
-<h2>GECLASSIFICEERD MISSIEDOSSIER</h2>
-<p class="muted">LAST SIGNAL · TECHNISCHE AFDELING · DOCUMENT LS-09</p>
-<div id="manualContent" class="manual-content"></div>
+<div id="tasks"></div>
+
+<section class="panel">
+<h2>Missieprotocol</h2>
+<ul>
+<li>De uitvoerder heeft geen toegang tot dit dossier.</li>
+<li>De technicus mag de uitvoerder alleen de benodigde commando's doorgeven.</li>
+<li>De uitvoerder moet de commando's in de juiste volgorde invoeren.</li>
+<li>Drie foute invoeren betekenen onmiddellijk missie mislukt.</li>
+<li>Na het laatste correcte commando is de missie voltooid.</li>
+</ul>
+</section>
 </div>
-</section>
-
-<section id="ending" class="hidden panel">
-<h2 id="endingTitle"></h2>
-<p id="endingText"></p>
-<button onclick="location.reload()">NIEUWE MISSIE</button>
-</section>
-
 </main>
 
-<footer>LAST SIGNAL · OFFLINE MISSION SYSTEM · BUILD 4.0</footer>
-
 <script>
-const NAMES=["Mira Voss","Elias Chen","Nora Vale","Jonas Reed","Ava Brooks","Leo Hart","Sofia Klein","Milan Cross","Iris Stone","Noah Wells","Lena Frost","Dylan Park"];
-const ROLES=["Hoofdingenieur","Navigatieofficier","Medisch specialist","Communicatieofficier","Piloot","Systeembeheerder","Reactorbeheerder","Onderzoeker","Beveiligingsofficier","Bioloog","Mechanicus","Commandant"];
-const COLORS=["ROOD","BLAUW","GEEL","GROEN"];
-const COMMANDS=["SCAN","ISOLATE","ROUTE","RESTORE"];
-
-let game=null;
-let timerInterval=null;
-let audio=null;
-let currentSelections=[];
-
-function seeded(seed){
+function hashCode(str){
  let h=2166136261;
- for(let i=0;i<seed.length;i++){
-  h^=seed.charCodeAt(i);
+ for(let i=0;i<str.length;i++){
+  h^=str.charCodeAt(i);
   h=Math.imul(h,16777619);
  }
+ return h>>>0;
+}
+function randomGenerator(seed){
+ let a=seed>>>0;
  return function(){
-  h+=0x6D2B79F5;
-  let t=h;
-  t=Math.imul(t^t>>>15,t|1);
-  t^=t+Math.imul(t^t>>>7,t|61);
-  return ((t^t>>>14)>>>0)/4294967296;
+  a+=0x6D2B79F5;
+  let t=a;
+  t=Math.imul(t^(t>>>15),t|1);
+  t^=t+Math.imul(t^(t>>>7),t|61);
+  return ((t^(t>>>14))>>>0)/4294967296;
  };
 }
-function rnd(r,a,b){return Math.floor(r()*(b-a+1))+a}
-function shuffle(arr,r){
- let a=[...arr];
- for(let i=a.length-1;i>0;i--){
-  let j=Math.floor(r()*(i+1));
-  [a[i],a[j]]=[a[j],a[i]];
- }
- return a;
-}
-function pick(arr,r){return arr[rnd(r,0,arr.length-1)]}
-function pad(n){return String(n).padStart(2,"0")}
-function norm(s){return String(s).trim().toUpperCase().replace(/\s+/g,"").replace(/-/g,"").replace(/,/g,"")}
-function alphabet(n){return String.fromCharCode(65+((n-1)%26+26)%26)}
-function codeNumber(code){return Number(code.replace(/\D/g,"").slice(-2))||17}
+function makeMission(code){
+ const rand=randomGenerator(hashCode(code.trim().toUpperCase()+"|LASTSIGNAL5"));
+ const pick=a=>a[Math.floor(rand()*a.length)];
+ const int=(min,max)=>Math.floor(rand()*(max-min+1))+min;
 
-function startMission(){
+ const crewNames=["Mara Voss","Elias Chen","Noah Vermeer","Sofia Laurent","Daan Mercer","Lina Okafor","Milo Hayes","Amira Bakker"];
+ const crewCount=int(4,7);
+ const crew=crewNames.slice().sort(()=>rand()-.5).slice(0,crewCount);
+ const redLights=int(2,5);
+ const taskCount=10;
+ const digits=(code.toUpperCase().match(/\d/g)||[]).map(Number);
+ const digitSum=digits.reduce((a,b)=>a+b,0);
+ const seedValue=(digitSum+redLights+crewCount+taskCount);
+ const powerA=1+(seedValue%4);
+ const powerB=1+((seedValue+2)%4);
+ const powerC=1+((seedValue+1)%4);
+ const oxygen=70+crewCount*3+redLights;
+ const valve=String.fromCharCode(65+((redLights+crewCount)%5));
+ const reactor=100+(redLights*crewCount)+(digitSum%50);
+ const x=12+(digitSum%37);
+ const y=20+((digitSum+crewCount*3)%41);
+ const frequency=118000+((digitSum*17+crewCount*11)%900);
+ const batteryA=1+(redLights%4);
+ const batteryB=1+((crewCount+1)%4);
+ const authorized=crew[0];
+ const pin=String((digitSum*7+crewCount*13+redLights*5)%9000+1000);
+
+ const secretWords=["ORION","NOVA","ATLAS","VEGA","LYRA","SOLAR"];
+ const secret=pick(secretWords);
+ const shift=1+(redLights%4);
+ const encoded=secret.split("").map(c=>String.fromCharCode(65+((c.charCodeAt(0)-65+shift)%26))).join("");
+
+ const finalNumber=(oxygen+reactor+x+y+frequency%1000+batteryA*10+batteryB+Number(pin))%10000;
+ const finalCode=String(finalNumber).padStart(4,"0");
+
+ return {
+  code:code.trim().toUpperCase(),crew,crewCount,redLights,taskCount,digitSum,
+  oxygen,reactor,x,y,frequency,batteryA,batteryB,authorized,pin,
+  encoded,secret,shift,finalCode,
+  tasks:[
+   {
+    title:"01 · Hoofdenergie herstellen",
+    situation:"De hoofdenergieverdeler is uitgevallen. Drie stroomroutes moeten in de juiste volgorde worden aangesloten.",
+    puzzle:`Gebruik de missiegegevens: aantal rode waarschuwingslampen (${redLights}) + aantal bemanningsleden (${crewCount}) + aantal opdrachten (${taskCount}). Tel hierbij de som van de cijfers in de missiecode (${digitSum}) op. Bepaal daarna de drie routewaarden: A = 1 + (uitkomst modulo 4), B = 1 + ((uitkomst + 2) modulo 4), C = 1 + ((uitkomst + 1) modulo 4).`,
+    answer:`POWER GRID ${powerA}-${powerB}-${powerC}`
+   },
+   {
+    title:"02 · Zuurstofvoorziening",
+    situation:"De zuurstofgenerator is in noodstand gegaan. De installatie moet opnieuw worden ingesteld op basis van de bezetting en de schade.",
+    puzzle:`Bereken het zuurstofniveau: 70 + (aantal bemanningsleden × 3) + aantal rode lampen. De uitkomst is het vereiste percentage.`,
+    answer:`OXYGEN ${oxygen}%`
+   },
+   {
+    title:"03 · Drukregeling",
+    situation:"Een drukventiel staat verkeerd. De technicus moet bepalen welk ventiel opnieuw geopend moet worden.",
+    puzzle:`Tel het aantal rode lampen op bij het aantal bemanningsleden. Neem de rest bij deling door 5. Zet 0 om naar A, 1 naar B, 2 naar C, 3 naar D en 4 naar E.`,
+    answer:`VALVE OPEN ${valve}`
+   },
+   {
+    title:"04 · Reactor herstarten",
+    situation:"De reactor is automatisch uitgeschakeld. De herstartwaarde moet uit de missiegegevens worden berekend.",
+    puzzle:`Bereken: 100 + (aantal rode lampen × aantal bemanningsleden) + (som van de cijfers uit de missiecode modulo 50).`,
+    answer:`REACTOR START ${reactor}`
+   },
+   {
+    title:"05 · Navigatie herstellen",
+    situation:"Het navigatiesysteem is zijn coördinaten kwijtgeraakt. De technicus moet de oorspronkelijke route terugberekenen.",
+    puzzle:`Bereken X = 12 + (som van de cijfers in de missiecode modulo 37). Bereken Y = 20 + ((som van de cijfers in de missiecode + aantal bemanningsleden × 3) modulo 41).`,
+    answer:`NAV SET ${x} ${y}`
+   },
+   {
+    title:"06 · Communicatie herstellen",
+    situation:"De noodzender werkt nog, maar de frequentie is gewist. De juiste frequentie moet opnieuw worden ingesteld.",
+    puzzle:`Bereken de laatste drie cijfers: (som van de cijfers uit de missiecode × 17 + aantal bemanningsleden × 11) modulo 900. Tel daar 118000 bij op.`,
+    answer:`COMMS FREQ ${frequency}`
+   },
+   {
+    title:"07 · Noodaccu's verbinden",
+    situation:"De noodaccu's zijn losgekoppeld. De juiste twee aansluitingen moeten worden bepaald.",
+    puzzle:`Accu A = 1 + (aantal rode lampen modulo 4). Accu B = 1 + ((aantal bemanningsleden + 1) modulo 4).`,
+    answer:`BATTERY LINK ${batteryA}-${batteryB}`
+   },
+   {
+    title:"08 · Bemanningsautorisatie",
+    situation:"Het beveiligingssysteem accepteert geen toegang meer. De eerste naam in de bemanningslijst heeft de herstelautorisatie.",
+    puzzle:`Gebruik de eerste naam uit de bemanningslijst. De pincode is: (som van de cijfers uit de missiecode × 7 + aantal bemanningsleden × 13 + aantal rode lampen × 5) modulo 9000, plus 1000.`,
+    answer:`AUTH ${authorized.toUpperCase()} ${pin}`
+   },
+   {
+    title:"09 · Noodsignaal ontcijferen",
+    situation:"De communicatiecomputer heeft een versleuteld noodbericht ontvangen. De tekst moet worden ontcijferd voordat het bericht kan worden bevestigd.",
+    puzzle:`Ontcijfer het bericht "${encoded}". Iedere letter is ${shift} plaats(en) vooruit verschoven in het alfabet. Schuif iedere letter dus ${shift} plaats(en) terug. Gebruik A na Z.`,
+    answer:`DECODE ${secret}`
+   },
+   {
+    title:"10 · Laatste systeemvrijgave",
+    situation:"De systemen zijn hersteld. De centrale computer vraagt om één laatste controlecode voordat de noodprocedure kan worden beëindigd.",
+    puzzle:`Gebruik de resultaten uit eerdere opdrachten: zuurstofniveau (${oxygen}) + reactorwaarde (${reactor}) + navigatie X (${x}) + navigatie Y (${y}) + de laatste drie cijfers van de frequentie (${frequency%1000}) + accu A × 10 (${batteryA*10}) + accu B (${batteryB}) + autorisatiepincode (${pin}). Neem de uitkomst modulo 10000 en schrijf het resultaat met vier cijfers.`,
+    answer:`FINAL RELEASE ${finalCode}`
+   }
+  ]
+ };
+}
+function safe(text){
+ return String(text).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function openMission(){
  const code=document.getElementById("missionCode").value.trim();
- if(code.length<4){alert("De missiecode moet minimaal vier tekens bevatten.");return}
- const r=seeded(code+"|LASTSIGNAL4");
- const crewNames=shuffle(NAMES,r).slice(0,8);
- const roles=shuffle(ROLES,r);
- const crew=crewNames.map((name,i)=>({name,role:roles[i],status:i<6?"ACTIEF":"NIET BEREIKBAAR"}));
- const active=crew.filter(x=>x.status==="ACTIEF").length;
- const red=rnd(r,3,8),blue=rnd(r,1,5),yellow=rnd(r,2,7);
- const damaged=rnd(r,2,5),mission=codeNumber(code);
- const cells=rnd(r,4,9),serial=String(rnd(r,1000,9999));
- const sector=rnd(r,10,48),deviation=rnd(r,2,9);
- const baseFrequency=rnd(r,100,160);
- const cableOrder=shuffle(COLORS,r);
- const switches=Array.from({length:4},()=>r()<.5?1:0);
- const commandOrder=shuffle(COMMANDS,r);
- const crewTarget=pick(crew.filter(x=>x.status==="ACTIEF"),r);
- const cipherShift=rnd(r,1,5);
- const secretWord=pick(["ORION","NEBULA","COMET","PULSAR","COSMOS"],r);
- const cipher=secretWord.replace(/[A-Z]/g,c=>String.fromCharCode((c.charCodeAt(0)-65+cipherShift)%26+65));
- const valveValues=shuffle([12,18,24,30],r);
- const energy=[rnd(r,10,30),rnd(r,10,30),rnd(r,10,30)];
- const starX=rnd(r,2,9),starY=rnd(r,2,9);
- const reactorOrder=shuffle([1,2,3,4],r);
- const letter=alphabet(red+active-damaged+mission);
- const pin=String((red*100+active*10+damaged+mission)%10000).padStart(4,"0");
-
- game={
-  code,
-  name:document.getElementById("missionName").value||"The Lost Expedition",
-  data:{crew,active,red,blue,yellow,damaged,mission,cells,serial,sector,deviation,baseFrequency,cableOrder,switches,commandOrder,crewTarget,cipherShift,secretWord,cipher,valveValues,energy,starX,starY,reactorOrder,letter,pin},
-  mistakes:0,done:[],index:0,over:false,
-  seconds:Number(document.getElementById("duration").value)*60,
-  tasks:[]
- };
- buildTasks();
- buildManual();
- document.getElementById("setup").classList.add("hidden");
- document.getElementById("roleScreen").classList.remove("hidden");
- document.getElementById("opCode").textContent=code;
- startTimer();
-}
-
-function task(id,title,situation,goal,steps,success,fields,answers){
- game.tasks.push({id,title,situation,goal,steps,success,fields,answers});
-}
-
-function buildTasks(){
- const d=game.data;
-
- task("cables","01 · Noodstroomkabels",
- "De noodgenerator produceert nog energie, maar de stroom bereikt de hoofdverdeler niet. De vier voedingskabels zijn losgeraakt.",
- "Sluit alle vier de kabels aan op de juiste aansluitingen.",
- ["Open het aansluitpaneel.","Bekijk de beschikbare kabelkleuren.","Zoek de aansluitvolgorde in het technische dossier.","Vul de vier kleuren in de juiste volgorde in.","Druk op controleren."],
- "Het paneel meldt dat alle vier verbindingen stabiel zijn.",
- [{label:"Kabelvolgorde (bijvoorbeeld ROOD-BLAUW-GEEL-GROEN)",type:"text"}],
- [d.cableOrder.join("-")]);
-
- task("terminal","02 · Hoofdcomputer",
- "De centrale computer is in beveiligingsmodus gegaan. De normale systeemfuncties zijn geblokkeerd.",
- "Voer de vier herstelcommando's in de juiste volgorde uit.",
- ["Open de terminal.","Lees het computerprotocol in de handleiding.","Voer de vier commando's in, gescheiden door streepjes.","Controleer de invoer."],
- "De terminal toont SYSTEM RESTORED.",
- [{label:"Commando's (SCAN-ISOLATE-ROUTE-RESTORE)",type:"text"}],
- [d.commandOrder.join("-")]);
-
- task("calculation","03 · Herstelletter",
- "De computer vraagt om een lettercode voordat het herstelprotocol wordt vrijgegeven.",
- "Bereken de herstelletter met de gegevens uit het incidentrapport.",
- ["Zoek het aantal rode lampen.","Zoek het aantal actieve bemanningsleden.","Zoek het aantal beschadigde systemen.","Gebruik het missienummer.","Bereken: rode lampen + actieve bemanning − beschadigde systemen + missienummer.","Zet de uitkomst om naar een letter: A=1 tot Z=26."],
- "De juiste letter wordt door de computer geaccepteerd.",
- [{label:"Herstelletter",type:"text"}],
- [d.letter]);
-
- task("switches","04 · Energiepaneel",
- "De noodverdeler staat verkeerd ingesteld. Vier schakelaars bepalen welke onderdelen stroom ontvangen.",
- "Zet de vier schakelaars in de juiste stand.",
- ["Zoek de vier bitwaarden in het technische dossier.","Een 1 betekent AAN.","Een 0 betekent UIT.","Stel iedere schakelaar in volgens de bitreeks.","Controleer de vier standen."],
- "Alle vier schakelaars staan correct.",
- [{label:"Schakelaar 1",type:"select",options:["AAN","UIT"]},{label:"Schakelaar 2",type:"select",options:["AAN","UIT"]},{label:"Schakelaar 3",type:"select",options:["AAN","UIT"]},{label:"Schakelaar 4",type:"select",options:["AAN","UIT"]}],
- d.switches.map(x=>x?"AAN":"UIT"));
-
- task("frequency","05 · Radiofrequentie",
- "De radiozender is niet meer afgestemd op het noodnetwerk. De basisfrequentie is bekend, maar de herstelwaarde moet worden berekend.",
- "Bereken de juiste radiofrequentie en voer deze in.",
- ["Zoek de basisfrequentie.","Zoek het aantal actieve reactorcellen.","Zoek de laatste twee cijfers van het radioserienummer.","Bereken: basisfrequentie + (reactorcellen × 10) + laatste twee cijfers serienummer."],
- "De radio toont SIGNAL LOCKED.",
- [{label:"Frequentie in MHz",type:"number"}],
- [String(d.baseFrequency+d.cells*10+Number(d.serial.slice(-2)))]);
-
- task("oxygen","06 · Zuurstofinstallatie",
- "De zuurstoftoevoer staat op noodniveau. De bemanningsmodule meldt dat er onvoldoende toevoer is.",
- "Stel de minimale zuurstoftoevoer voor de actieve bemanning in.",
- ["Zoek het aantal actieve bemanningsleden.","Zoek de zuurstofnorm per persoon in het dossier.","Vermenigvuldig het aantal actieve bemanningsleden met de norm.","Voer de uitkomst in."],
- "Het systeem meldt OXYGEN LEVEL STABLE.",
- [{label:"Zuurstofeenheden per minuut",type:"number"}],
- [String(d.active*3)]);
-
- task("valves","07 · Drukventielen",
- "In de koelinstallatie is de druk ongelijk verdeeld. De vier ventielen moeten in een veilige volgorde worden geopend.",
- "Bepaal de volgorde van laagste naar hoogste druk.",
- ["Zoek de vier drukmetingen in het onderhoudsrapport.","Vergelijk de waarden.","Zet de waarden van laag naar hoog.","Voer de vier waarden in, gescheiden door streepjes."],
- "De druk wordt gelijkmatig verdeeld.",
- [{label:"Volgorde van drukwaarden",type:"text"}],
- [[...d.valveValues].sort((a,b)=>a-b).join("-")]);
-
- task("navigation","08 · Navigatiecomputer",
- "Het schip is van zijn geplande route geraakt. De navigatiecomputer heeft de oorspronkelijke sector en de afwijking bewaard.",
- "Bereken de nieuwe X- en Y-coördinaten.",
- ["Zoek de sector in het navigatierapport.","Zoek de afwijking.","Bereken X = sector + afwijking.","Bereken Y = sector − afwijking.","Voer X en Y in."],
- "De navigatiecomputer meldt COURSE ACCEPTED.",
- [{label:"X-coördinaat",type:"number"},{label:"Y-coördinaat",type:"number"}],
- [String(d.sector+d.deviation),String(d.sector-d.deviation)]);
-
- task("radio","09 · Gecodeerd bericht",
- "De communicatieofficier heeft een gecodeerd bericht ontvangen. De inhoud is niet leesbaar.",
- "Ontcijfer het bericht en voer het verborgen woord in.",
- ["Zoek de verschuiving in het communicatiehoofdstuk.","Bekijk het ontvangen bericht.","Schuif iedere letter het aangegeven aantal plaatsen terug in het alfabet.","Voer het ontcijferde woord in."],
- "De radio herkent het bericht en bevestigt de transmissie.",
- [{label:"Ontcijferd woord",type:"text"}],
- [d.secretWord]);
-
- task("energy","10 · Noodaccu's",
- "De reactor is nog niet volledig actief. De drie noodaccu's moeten samen voldoende energie leveren voor de volgende herstelstap.",
- "Bereken de totale energie van de drie accu's.",
- ["Zoek de waarde van accu A.","Zoek de waarde van accu B.","Zoek de waarde van accu C.","Tel de drie waarden bij elkaar op.","Voer het totaal in."],
- "De energieverdeler bevestigt dat de totale capaciteit klopt.",
- [{label:"Totale energie-eenheden",type:"number"}],
- [String(d.energy.reduce((a,b)=>a+b,0))]);
-
- task("crew","11 · Bemanningsidentificatie",
- "De boordcomputer zoekt de persoon die de herstelprocedure mag autoriseren. Alleen een actief bemanningslid kan deze toestemming geven.",
- "Identificeer de aangewezen herstelverantwoordelijke.",
- ["Open het bemanningsregister.","Controleer welke bemanningsleden actief zijn.","Zoek de persoon die als herstelverantwoordelijke staat aangegeven.","Voer de volledige naam in."],
- "De boordcomputer accepteert de autorisatie.",
- [{label:"Volledige naam",type:"text"}],
- [d.crewTarget.name]);
-
- task("reactor","12 · Reactorstart",
- "De reactor is uitgeschakeld na een veiligheidsstop. De vier startkanalen moeten in de juiste volgorde worden geactiveerd.",
- "Voer de reactorstartvolgorde in.",
- ["Zoek het reactorstartprotocol.","Bekijk de vier kanaalnummers.","Voer ze in de aangegeven volgorde in, gescheiden door streepjes.","Controleer de startvolgorde."],
- "De reactor toont CORE ONLINE.",
- [{label:"Startvolgorde",type:"text"}],
- [d.reactorOrder.join("-")]);
-
- task("stars","13 · Sterrenkaart",
- "De navigatiecamera heeft een herkenbare ster gemarkeerd. De kaartcomputer gebruikt een eenvoudige berekening om de juiste referentiewaarde te bepalen.",
- "Bereken de kaartwaarde van de gemarkeerde ster.",
- ["Zoek de X-coördinaat in het sterrenkaartarchief.","Zoek de Y-coördinaat.","Vermenigvuldig X met Y.","Voer de kaartwaarde in."],
- "De kaartcomputer accepteert de referentiewaarde.",
- [{label:"Kaartwaarde",type:"number"}],
- [String(d.starX*d.starY)]);
-
- task("access","14 · Noodtoegangscode",
- "De beveiligingsdeur van de reactorruimte is vergrendeld. De noodtoegangscode moet opnieuw worden berekend.",
- "Bereken de viercijferige toegangscode.",
- ["Zoek het aantal rode lampen.","Zoek het aantal actieve bemanningsleden.","Zoek het aantal beschadigde systemen.","Gebruik het missienummer.","Bereken: (rode lampen × 100) + (actieve bemanning × 10) + beschadigde systemen + missienummer.","Neem de laatste vier cijfers. Vul vooraan nullen aan indien nodig."],
- "De beveiligingsdeur geeft toegang tot de reactorruimte.",
- [{label:"Viercijferige toegangscode",type:"text"}],
- [d.pin]);
-
- task("final","15 · Laatste transmissie",
- "De belangrijkste systemen zijn hersteld. Alleen de laatste noodtransmissie moet nog worden verstuurd.",
- "Bouw de laatste transmissiecode op uit drie eerdere resultaten.",
- ["Gebruik de herstelletter uit opdracht 03.","Gebruik het ontcijferde radiowoord uit opdracht 09.","Gebruik de laatste twee cijfers van de noodtoegangscode uit opdracht 14.","Plak de drie onderdelen direct achter elkaar, zonder spaties.","Voer de volledige code in."],
- "De aarde ontvangt het noodsignaal en bevestigt de reddingsoperatie.",
- [{label:"Volledige transmissiecode",type:"text"}],
- [d.letter+d.secretWord+d.pin.slice(-2)]);
-
- game.tasks=shuffle(game.tasks,seeded(game.code+"|TASKORDER"));
-}
-
-function buildManual(){
- const d=game.data;
- const crewRows=d.crew.map(c=>`<tr><td>${c.name}</td><td>${c.role}</td><td>${c.status}</td></tr>`).join("");
- const bits=d.switches.map(x=>x?"1":"0").join("");
- const pressure=d.valveValues.map((v,i)=>`<li>Ventiel ${i+1}: ${v} kPa</li>`).join("");
- const energy=d.energy.map((v,i)=>`<li>Accu ${String.fromCharCode(65+i)}: ${v} energie-eenheden</li>`).join("");
-
- document.getElementById("manualContent").innerHTML=`
- <div class="manual-section">
- <h3>HOOFDSTUK 1 — HET INCIDENT</h3>
- <p><b>Schip:</b> ${game.name}</p>
- <p><b>Missiecode:</b> ${game.code}</p>
- <p><b>Locatie:</b> Sector ${d.sector}, diepe ruimte.</p>
- <p><b>Datum:</b> 18 november 2189.</p>
- <p>Het onderzoeksschip vertrok voor een expeditie naar een onbekend gebied buiten de bekende ruimtecorridors. De missie verliep aanvankelijk volgens plan. De bemanning verzamelde gegevens over sterren, energiebronnen en onbekende radiosignalen.</p>
- <p>Tijdens de terugreis registreerde de boordcomputer een plotselinge energiestoring. De reactor schakelde zichzelf uit. Kort daarna vielen de navigatie, communicatie en een deel van de levensondersteuning uit.</p>
- <p>De noodgenerator nam het over, maar de stroomverdeling was beschadigd. De controlekamer werd overspoeld door waarschuwingsmeldingen. De bemanning probeerde de systemen handmatig te herstellen, maar verloor het contact met de buitenwereld.</p>
- <p>De laatste transmissie luidde: <b>“Dit is de commandant van het onderzoeksschip. De hoofdreactor is uitgevallen. We hebben hulp nodig. Als iemand dit ontvangt: herstel de kern voordat het signaal verdwijnt.”</b></p>
- <p>Jullie zijn het externe herstelteam. Jullie moeten de beschadigde systemen herstellen, de bemanning lokaliseren en een noodsignaal naar de aarde versturen.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 2 — BEMANNINGSREGISTER</h3>
- <p>Het schip vertrok met ${d.crew.length} bemanningsleden. De boordcomputer registreert momenteel ${d.active} actieve bemanningsleden.</p>
- <table><tr><th>Naam</th><th>Functie</th><th>Status</th></tr>${crewRows}</table>
- <p>De herstelverantwoordelijke is <b>${d.crewTarget.name}</b>. Deze persoon mag de herstelprocedure autoriseren.</p>
- <p>Let op: alleen actieve bemanningsleden mogen worden meegenomen in berekeningen voor levensondersteuning.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 3 — INCIDENTANALYSE</h3>
- <p>De sensoren hebben de volgende waarschuwingen geregistreerd:</p>
- <ul>
- <li>Rode waarschuwingslampen: <b>${d.red}</b></li>
- <li>Blauwe waarschuwingslampen: <b>${d.blue}</b></li>
- <li>Gele waarschuwingslampen: <b>${d.yellow}</b></li>
- <li>Beschadigde hoofdsystemen: <b>${d.damaged}</b></li>
- </ul>
- <p>Rood staat voor kritieke storingen. Blauw staat voor communicatieproblemen. Geel staat voor waarschuwingen.</p>
- <p>Het missienummer bestaat uit de laatste twee cijfers van het numerieke gedeelte van de missiecode. Als er geen cijfers in de code staan, gebruik je 17.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 4 — KABELSCHEMA</h3>
- <p>De noodgenerator is nog actief, maar de vier voedingskabels zijn losgeraakt.</p>
- <p>De aansluitvolgorde is:</p>
- <div class="sequence">${d.cableOrder.map(x=>`<span>${x}</span>`).join("")}</div>
- <p>De kabels moeten in deze volgorde op de vier aansluitingen worden aangesloten. Een verkeerde aansluiting activeert de verdeler niet.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 5 — COMPUTERPROTOCOL</h3>
- <p>De hoofdcomputer heeft een herstelprotocol met vier stappen. De commando's moeten in de juiste volgorde worden ingevoerd.</p>
- <ol>
- <li><b>SCAN:</b> controleer de foutmeldingen.</li>
- <li><b>ISOLATE:</b> isoleer het beschadigde onderdeel.</li>
- <li><b>ROUTE:</b> stuur de energie om.</li>
- <li><b>RESTORE:</b> herstel de verbinding.</li>
- </ol>
- <p>De correcte commando's voor deze missie zijn:</p>
- <div class="sequence">${d.commandOrder.map(x=>`<span>${x}</span>`).join("")}</div>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 6 — HERSTELLETTER</h3>
- <p>De centrale computer gebruikt een lettercode om het herstelprotocol te ontgrendelen.</p>
- <p><b>Formule:</b> rode lampen + actieve bemanningsleden − beschadigde systemen + missienummer.</p>
- <p>Het resultaat moet worden omgezet naar een letter. A=1, B=2, C=3 enzovoort. Na 26 begin je opnieuw bij A.</p>
- <p>Voorbeeld: 23 wordt W.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 7 — COMMUNICATIERAPPORT</h3>
- <p>Basisfrequentie radio: <b>${d.baseFrequency} MHz</b>.</p>
- <p>Actieve reactorcellen: <b>${d.cells}</b>.</p>
- <p>Radioserienummer: <b>${d.serial}</b>.</p>
- <p>Bereken de herstel-frequentie met: basisfrequentie + (reactorcellen × 10) + de laatste twee cijfers van het serienummer.</p>
- <p>Het gecodeerde bericht gebruikt een letterverschuiving van <b>${d.cipherShift}</b> plaatsen vooruit. Om het bericht te lezen, verschuif je iedere letter dat aantal plaatsen terug.</p>
- <p>Ontvangen bericht: <b>${d.cipher}</b>.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 8 — LEVENSONDERSTEUNING</h3>
- <p>Iedere actieve bemanningslid heeft minimaal <b>3 zuurstofeenheden per minuut</b> nodig.</p>
- <p>Vermenigvuldig het aantal actieve bemanningsleden met deze norm om de totale minimale zuurstoftoevoer te berekenen.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 9 — DRUKINSTALLATIE</h3>
- <p>De vier drukventielen moeten van laagste naar hoogste druk worden geopend.</p>
- <p>Gemeten waarden:</p>
- <ul>${pressure}</ul>
- <p>Sorteer de vier drukwaarden van laag naar hoog. Voer de waarden in die volgorde in.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 10 — NAVIGATIERAPPORT</h3>
- <p>De huidige sector is <b>${d.sector}</b>. De gemeten afwijking is <b>${d.deviation}</b>.</p>
- <p>De nieuwe coördinaten worden berekend met:</p>
- <ul><li>X = sector + afwijking</li><li>Y = sector − afwijking</li></ul>
- <p>Voer de berekende X- en Y-coördinaten afzonderlijk in.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 11 — NOODACCU'S</h3>
- <p>De drie noodaccu's leveren:</p>
- <ul>${energy}</ul>
- <p>Tel de drie waarden bij elkaar op om de totale beschikbare energie te bepalen.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 12 — REACTORSTART</h3>
- <p>De reactor gebruikt vier startkanalen. De juiste startvolgorde is:</p>
- <div class="sequence">${d.reactorOrder.map(x=>`<span>KANAAL ${x}</span>`).join("")}</div>
- <p>Activeer de vier kanalen in exact deze volgorde. Een kanaal mag niet worden overgeslagen.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 13 — STERRENKAART</h3>
- <p>De navigatiecamera heeft een ster als referentiepunt gemarkeerd.</p>
- <p>X-coördinaat: <b>${d.starX}</b>.</p>
- <p>Y-coördinaat: <b>${d.starY}</b>.</p>
- <p>De kaartwaarde wordt berekend door X met Y te vermenigvuldigen.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 14 — BEVEILIGING</h3>
- <p>De noodtoegangscode wordt berekend met:</p>
- <p><b>(rode lampen × 100) + (actieve bemanning × 10) + beschadigde systemen + missienummer.</b></p>
- <p>Neem de laatste vier cijfers van de uitkomst. Als de uitkomst minder dan vier cijfers heeft, vul je vooraan nullen aan.</p>
- </div>
-
- <div class="manual-section">
- <h3>HOOFDSTUK 15 — LAATSTE TRANSMISSIE</h3>
- <p>De laatste transmissie bestaat uit drie onderdelen:</p>
- <ol>
- <li>De herstelletter uit hoofdstuk 6.</li>
- <li>Het ontcijferde radiowoord uit hoofdstuk 7.</li>
- <li>De laatste twee cijfers van de noodtoegangscode uit hoofdstuk 14.</li>
- </ol>
- <p>Plak de drie onderdelen direct achter elkaar, zonder spaties.</p>
- </div>
-
- <div class="manual-section">
- <h3>ALGEMENE MISSIEREGELS</h3>
- <ul>
- <li>De missie bevat 15 opdrachten.</li>
- <li>De opdrachten worden in willekeurige volgorde aangeboden.</li>
- <li>Gebruik de handleiding om de benodigde gegevens te vinden.</li>
- <li>Er zijn maximaal 3 fouten toegestaan voor de hele missie.</li>
- <li>Bij de derde fout mislukt de missie direct.</li>
- <li>Iedere fout kost bovendien 30 seconden.</li>
- <li>Als de timer nul bereikt, mislukt de missie.</li>
- <li>De handleiding en console moeten dezelfde missiecode gebruiken.</li>
- </ul>
- </div>`;
-}
-
-function enterRole(role){
- document.getElementById("roleScreen").classList.add("hidden");
- if(role==="operator"){
-  document.getElementById("operator").classList.remove("hidden");
-  renderTask();
- }else{
-  document.getElementById("manual").classList.remove("hidden");
- }
-}
-
-function renderTask(){
- if(game.over)return;
- const t=game.tasks[game.index];
- if(!t){finishMission(true);return}
- currentSelections=[];
- document.getElementById("taskNumber").textContent="OPDRACHT "+String(game.index+1).padStart(2,"0")+" / 15";
- document.getElementById("taskTitle").textContent=t.title;
- document.getElementById("taskSituation").textContent=t.situation;
- document.getElementById("taskGoal").textContent=t.goal;
- document.getElementById("taskSuccess").textContent=t.success;
- document.getElementById("taskSteps").innerHTML="<ol>"+t.steps.map(s=>"<li>"+s+"</li>").join("")+"</ol>";
- document.getElementById("message").textContent="Voer de opdracht uit.";
- document.getElementById("checkButton").disabled=false;
- renderInputs(t);
- updateStatus();
- renderTaskList();
-}
-
-function renderInputs(t){
- const area=document.getElementById("taskInputArea");
- area.innerHTML="";
- t.fields.forEach((f,i)=>{
-  const label=document.createElement("label");
-  label.textContent=f.label;
-  area.appendChild(label);
-  let el;
-  if(f.type==="select"){
-   el=document.createElement("select");
-   el.innerHTML='<option value="">Kies een stand</option>'+f.options.map(x=>`<option value="${x}">${x}</option>`).join("");
-  }else{
-   el=document.createElement("input");
-   el.type=f.type;
-   el.placeholder="Voer hier je antwoord in";
-   if(f.type==="number")el.step="1";
-  }
-  el.id="field"+i;
-  area.appendChild(el);
- });
-}
-
-function checkAnswer(){
- if(game.over)return;
- const t=game.tasks[game.index];
- const values=t.fields.map((f,i)=>document.getElementById("field"+i).value);
- if(values.some(v=>v.trim()==="")){
-  document.getElementById("message").innerHTML='<span class="warning">Vul eerst alle onderdelen in.</span>';
-  return;
- }
- const correct=values.every((v,i)=>norm(v)===norm(t.answers[i]));
- if(correct){
-  game.done.push(t.id);
-  playSound(700);
-  document.getElementById("message").innerHTML='<span class="good">UITVOERING GESLAAGD — SYSTEEM HERSTELD</span>';
-  document.getElementById("checkButton").disabled=true;
-  game.index++;
-  updateStatus();
-  renderTaskList();
-  if(game.index>=game.tasks.length){
-   setTimeout(()=>finishMission(true),900);
-  }else{
-   setTimeout(renderTask,900);
-  }
- }else{
-  game.mistakes++;
-  game.seconds=Math.max(0,game.seconds-30);
-  playSound(150);
-  updateStatus();
-  if(game.mistakes>=3){
-   finishMission(false,"Je hebt drie fouten gemaakt. De centrale computer heeft de herstelprocedure definitief afgebroken.");
-  }else{
-   document.getElementById("message").innerHTML=`<span class="warning">UITVOERING MISLUKT — FOUT ${game.mistakes} VAN 3. Er zijn 30 seconden afgetrokken. Controleer de handleiding en probeer opnieuw.</span>`;
-  }
- }
-}
-
-function updateStatus(){
- document.getElementById("mistakes").textContent=game.mistakes+" / 3";
- document.getElementById("progress").textContent=game.done.length+" / 15";
- document.getElementById("shipStatus").textContent="Herstelde systemen: "+game.done.length+" van 15. Nog "+(15-game.done.length)+" opdrachten te gaan.";
-}
-
-function renderTaskList(){
- document.getElementById("taskList").innerHTML=game.tasks.map((t,i)=>{
-  const done=game.done.includes(t.id);
-  const current=i===game.index;
-  return `<div class="task-chip ${done?"done":current?"current":""}">${done?"✓":current?"▶":String(i+1).padStart(2,"0")} · ${t.title.split("·")[1]}</div>`;
- }).join("");
-}
-
-function startTimer(){
- clearInterval(timerInterval);
- timerInterval=setInterval(()=>{
-  if(!game||game.over)return;
-  game.seconds--;
-  document.getElementById("timer").textContent=pad(Math.floor(game.seconds/60))+":"+pad(game.seconds%60);
-  if(game.seconds<=0)finishMission(false,"De missietijd is verstreken. De systemen zijn niet op tijd hersteld.");
- },1000);
-}
-
-function finishMission(success,reason=""){
- if(game.over)return;
- game.over=true;
- clearInterval(timerInterval);
- ["operator","manual","roleScreen"].forEach(id=>document.getElementById(id).classList.add("hidden"));
- document.getElementById("ending").classList.remove("hidden");
- document.getElementById("endingTitle").textContent=success?"MISSION COMPLETE":"MISSION FAILED";
- document.getElementById("endingText").textContent=success?
- "Alle vijftien opdrachten zijn uitgevoerd. De reactor is online, de navigatie is hersteld en de laatste transmissie is verzonden. De aarde heeft het noodsignaal ontvangen. De bemanning is gered.":
- reason||"De missie is mislukt.";
- playSound(success?900:100);
-}
-
-function playSound(freq){
- try{
-  audio=audio||new(window.AudioContext||window.webkitAudioContext)();
-  const osc=audio.createOscillator();
-  const gain=audio.createGain();
-  osc.frequency.value=freq;
-  osc.connect(gain);
-  gain.connect(audio.destination);
-  gain.gain.setValueAtTime(.12,audio.currentTime);
-  gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.25);
-  osc.start();
-  osc.stop(audio.currentTime+.25);
- }catch(e){}
+ const msg=document.getElementById("message");
+ if(code.length<3){msg.textContent="De missiecode moet minimaal 3 tekens bevatten.";return;}
+ const m=makeMission(code);
+ document.getElementById("missionTitle").textContent="MISSIE "+m.code;
+ document.getElementById("story").textContent=
+ "Om 03:17 UTC verloor het ruimteschip AURORA plotseling contact met de aarde. Een onbekende storing schakelde meerdere systemen uit. Het schip drijft buiten de geplande route. Er zijn "+m.crewCount+" bemanningsleden aan boord en "+m.redLights+" rode waarschuwingslampen actief. De technicus moet de systemen één voor één herstellen. De uitvoerder kan alleen commando's invoeren en ziet niet welke reparaties nodig zijn.";
+ document.getElementById("crew").innerHTML="<h3>Bemanningslijst</h3><ol>"+m.crew.map(n=>"<li>"+safe(n)+"</li>").join("")+"</ol>";
+ document.getElementById("missionFacts").textContent=
+ "Bemanning: "+m.crewCount+" · Rode lampen: "+m.redLights+" · Opdrachten: "+m.taskCount+" · Som missiecode: "+m.digitSum;
+ document.getElementById("tasks").innerHTML=m.tasks.map(t=>
+  `<article class="task"><h2>${safe(t.title)}</h2><p>${safe(t.situation)}</p><p><strong>Opdracht voor de technicus:</strong> ${safe(t.puzzle)}</p><p><strong>Geef dit commando door aan de uitvoerder:</strong></p><div class="command">${safe(t.answer)}</div></article>`
+ ).join("");
+ document.getElementById("manual").style.display="block";
+ msg.textContent="Missiedossier geopend. Controleer of de uitvoerder exact dezelfde missiecode gebruikt.";
 }
 </script>
 </body>
